@@ -5,45 +5,131 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>My Website</title>
+    <link rel="stylesheet" href = "style.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
   </head>
   <body>
     <main>
-        <h1>Welcome to My Website</h1>  
+        <div class="container">
+          <h1 class = "title1"><i>Let Play Pokemon</i></h1>  
+          <div class = "box">
+            <div class = "header">
+              <h2 id = "human">User score: <span id = "user_score">0</span></h2>
+              <h2 id = "computer">Computer score: <span id = comp_score>0</span></h2>
+            </div>
+            <div class = "container2">
+              <img class = "ash" src = "./ashketchup.png">
+              <img class = "vs" src = "./vs.png">
+              <img class = "gary" src = "./_-removebg-preview.png">
+            </div>
+            <div class = "container3">
+              <input id = "rock" type = "image" src = "./char.png" width = "100" height="100">
+              <input id = "paper" type = "image" src = "./image-removebg-preview (1).png" width = "100" height="100">
+              <input id = "scissor" type = "image" src = "./image-removebg-preview (copy 1).png" width = "100" height="100">
+            </div>
+          </div>
+        </div>
     </main>
- <script>    
-        const com_option = ["rock", "paper", "scissor"];
-        function getComputerChoice() {
-            let com_choice = com_option[(Math.floor(Math.random() * com_option.length))];
-            return com_choice;
+    <script>  
+
+      const userImage = document.querySelector(".ash");
+      const compImage = document.querySelector(".gary")
+
+
+
+      //Global Rock, Paper and Scissor choices
+      alert("First Player to 5 win");
+      const rock = document.getElementById("rock");
+      const paper = document.getElementById("paper");
+      const scissor = document.getElementById("scissor");
+
+      var varible = [rock, paper, scissor]
+
+      const userscore = document.getElementById("user_score");
+      const compscore = document.getElementById("comp_score");
+
+
+      function getComputerChoice() {
+        let computer_decision = varible[Math.floor(Math.random()* varible.length)];
+        return computer_decision.id
+      }
+
+      const images = document.querySelectorAll('input[type="image"]')
+      images.forEach(image =>{
+        image.addEventListener("click", gethumanChoice);
+      });
+      
+      const imageObject1 = {
+        rock: "./char.png",
+        paper: "./image-removebg-preview (1).png",
+        scissor: "./image-removebg-preview (copy 1).png",
+      }
+
+      function updateImage(a,b){
+        userImage.src = imageObject1[a];
+        compImage.src = imageObject1[b];
+      }
+
+      function recognition(){
+        const user1 = event.target.id;
+        const user2 = getComputerChoice();
+        updateImage(user1,user2);
+
+      }
+
+      images.forEach(image => {
+        image.addEventListener("click", recognition)
+      })
+
+      function resetGame() {
+        userscore.textContent = "0";
+        compscore.textContent = "0";
+
+        userImage.src = "./ashketchup.png";
+        compImage.src = "./_-removebg-preview.png";
+      } 
+
+
+      function playRound() {
+        const humanScore = parseInt(userscore.textContent);
+        const compScore = parseInt(compscore.textContent);
+
+
+        if (humanScore === 5) {
+          alert("You are the Champion!!!, \n sorry, I couldnt figure out how to reset the game");
+
+          resetGame();
+        } else if (compScore === 5) {
+          alert("Gary is the Champion!!!, \n sorry, I couldnt figure out how to reset the game")
+          resetGame();
         }
+      }
 
-        function getHumanChoice() {
-            let pick = prompt("Please enter a string: 'rock', 'paper' or 'scissor'").toLowerCase();
-            return pick; 
-        }
+      function gethumanChoice() {
+        const clicked = event.target.id;
+        console.log(clicked);
+        
 
-        let humanScore = 0;
-        let computerScore = 0;
+        if ((clicked === "rock" && getComputerChoice() === "scissor") ||
+      (clicked === "paper" && getComputerChoice() === "rock") ||
+      (clicked === "scissor" && getComputerChoice() === "paper")) {
+        console.log("You win")
+        userscore.textContent = parseInt(userscore.textContent) + 1;
+      } else if (clicked === getComputerChoice() ){
+        console.log("It a tie");
+      } else {
+        console.log("Computer win");
+        compscore.textContent = parseInt(compscore.textContent) + 1;
+      }
 
-        function playRound(humanChoice, computerChoice) {
-          if ((humanChoice === "rock" && computerChoice === "scissor") || 
-          (humanChoice === "paper" && computerChoice === "rock") || 
-          (humanChoice === "scissor" && computerChoice === "paper")){
-            console.log("You Win!!!");
-            console.log(humanScore +=1);
-          } else if  (humanChoice === computerChoice) {
-            console.log("It a tie");
-          } else {
-            console.log("Computer Win!!!");
-            console.log(computerScore +=1);
-          }
-        }
+      playRound();
+      }
 
-        function startGame() {
-          const humanSelection = getHumanChoice();
-          const computerSelection = getComputerChoice();
-          playRound(humanSelection, computerSelection);
-        } 
+ 
+
+      console.log(getComputerChoice());
 
 
 
